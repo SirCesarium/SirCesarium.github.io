@@ -147,60 +147,6 @@ export const initCursorFlame = (): void => {
 	};
 
 	let dimTimer: number | undefined;
-	let sootTimer: number | undefined;
-	let activeSoot: HTMLElement | undefined;
-
-	const clearSootTimer = () => {
-		if (sootTimer !== undefined) window.clearTimeout(sootTimer);
-
-		sootTimer = undefined;
-	};
-
-	const disposeSoot = (node: HTMLElement) => {
-		node.classList.remove('is-hot', 'is-scorched');
-		window.setTimeout(() => node.remove(), 2800);
-	};
-
-	const markSoot = () => {
-		clearSootTimer();
-
-		if (activeSoot) disposeSoot(activeSoot);
-
-		const node = document.createElement('div');
-
-		node.className = 'page-soot';
-		node.setAttribute('aria-hidden', 'true');
-		node.style.translate = `${x}px ${y}px`;
-		document.body.appendChild(node);
-
-		activeSoot = node;
-
-		// Commit the base (invisible) styles before enabling the mark, otherwise it pops in.
-		void node.offsetWidth;
-		node.classList.add('is-hot');
-
-		sootTimer = window.setTimeout(() => {
-			disposeSoot(node);
-			activeSoot = undefined;
-			sootTimer = undefined;
-		}, 6000);
-	};
-
-	const sootBurst = () => {
-		if (!activeSoot) return;
-
-		const node = activeSoot;
-
-		clearSootTimer();
-		node.classList.remove('is-hot');
-		node.classList.add('is-scorched');
-
-		sootTimer = window.setTimeout(() => {
-			disposeSoot(node);
-			activeSoot = undefined;
-			sootTimer = undefined;
-		}, 8000);
-	};
 
 	const darken = () => {
 		if (!dim) return;
@@ -221,7 +167,6 @@ export const initCursorFlame = (): void => {
 	let surge: number | undefined;
 	let gloom: number | undefined;
 	let build: number | undefined;
-	let stain: number | undefined;
 	let pixelGlitch: number | undefined;
 	let pixelFadeTimer: number | undefined;
 	let msgTimer: number | undefined;
@@ -267,14 +212,12 @@ export const initCursorFlame = (): void => {
 		if (surge !== undefined) window.clearTimeout(surge);
 		if (gloom !== undefined) window.clearTimeout(gloom);
 		if (build !== undefined) window.clearTimeout(build);
-		if (stain !== undefined) window.clearTimeout(stain);
 		if (dimTimer !== undefined) window.clearTimeout(dimTimer);
 
 		emitter = undefined;
 		surge = undefined;
 		gloom = undefined;
 		build = undefined;
-		stain = undefined;
 		dimTimer = undefined;
 		roaring = false;
 		tense = false;
@@ -305,16 +248,10 @@ export const initCursorFlame = (): void => {
 		deadPixel?.classList.remove('is-active');
 		deadPixelMsg?.classList.remove('is-active');
 
-		if (activeSoot) {
-			clearSootTimer();
-			activeSoot.remove();
-			activeSoot = undefined;
-		}
-
 		release();
 	};
 
-	// Dragging to select text should never leave fire, dim, or scorch marks behind.
+	// Dragging to select text should never leave fire or dim marks behind.
 	document.addEventListener('selectionchange', () => {
 		const selection = window.getSelection();
 
@@ -357,14 +294,11 @@ export const initCursorFlame = (): void => {
 				tense = true;
 			}, 1500);
 
-			stain = window.setTimeout(markSoot, 1000);
-
 			surge = window.setTimeout(() => {
 				tense = false;
 				roaring = true;
 				blast(x, y);
 				flare();
-				sootBurst();
 			}, 3000);
 
 			pixelGlitch = window.setTimeout(() => {
