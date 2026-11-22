@@ -138,6 +138,8 @@ const schemaGraph = {
 />
 
 <link rel="canonical" href={canonicalURL} />
+<link rel="alternate" hreflang="x-default" href={site.url} />
+<link rel="alternate" hreflang="en" href={site.url} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
@@ -145,6 +147,7 @@ const schemaGraph = {
 	title={`${site.name} — Projects Feed`}
 	href="/rss.xml"
 />
+<link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM Context" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />

@@ -1,52 +1,27 @@
-# Cesar Marcano (SirCesarium)
+# Cesar Marcano
 
 > Full-stack and systems developer based in Venezuela specializing in Rust, TypeScript, Node.js, and Laravel. Creator of developer tooling, CLI utilities, and open-source libraries.
 
-## About
-- **Name**: Cesar Marcano
-- **Alias**: Sir Cesarium / SirCesarium
-- **Role**: Full-stack developer
-- **Website**: https://sircesarium.github.io
-- **GitHub**: https://github.com/SirCesarium
-- **LinkedIn**: https://www.linkedin.com/in/cesar-marcano
-- **Email**: contact.cesarmarcano@gmail.com
-- **Core Technologies**: TypeScript, Rust, Node.js, Laravel, Svelte, React, Astro, Docker, PostgreSQL, WebAssembly (WASM).
+Cesar Marcano (SirCesarium) builds developer tooling, reverse-engineering utilities, and performant web applications. Core competencies include TypeScript, Rust, Node.js, Laravel, Svelte, React, Astro, WebAssembly (WASM), Docker, and PostgreSQL.
 
-## Featured Projects
+## Projects
 
-### modcrawl
-- **Description**: Fast, ergonomic CLI tool, Rust library, and web interface that crawls Minecraft mod JAR files to discover metadata, identify crash culprits, map dependency trees, and detect duplicate classes or conflicting mixins.
-- **Tech Stack**: Rust, TypeScript, WASM, SvelteKit, CLI.
-- **Repository**: https://github.com/SirCesarium/modcrawl
-- **Package**: https://crates.io/crates/modcrawl | https://www.npmjs.com/package/modcrawl
+- [modcrawl](https://github.com/SirCesarium/modcrawl): CLI tool, Rust library, and web interface that crawls Minecraft mod JARs to find crash culprits and metadata.
+- [re-color](https://recolor.pages.dev/): Local-first SvelteKit PWA that extracts color palettes from images and repaints them using Web Workers and WASM.
+- [inventory-api](https://github.com/SirCesarium/inventory-api): Production-grade RESTful inventory API with RBAC built with Laravel and Docker.
+- [stack-nav](https://github.com/SirCesarium/stack-nav): Zero-dependency state-based navigation library for React applications.
+- [zipcrawl](https://github.com/SirCesarium/zipcrawl): Ergonomic CLI utility and Rust library for safely inspecting ZIP archives.
+- [Type-Generator](https://github.com/SirCesarium/tyg): CLI wrapper around json_typegen to generate typed code from JSON, YAML, TOML, and XML.
+- [hellcat-theme](https://github.com/SirCesarium/hellcat-theme): Dark gruvbox-inspired color theme in three variants for VS Code, GTK, and terminals.
 
-### re-color
-- **Description**: Local-first SvelteKit Progressive Web App (PWA) that extracts color palettes from source images and intelligently repaints target images using Web Workers and custom WASM strategies.
-- **Tech Stack**: SvelteKit, Tailwind CSS, PWA, TypeScript, WebAssembly.
-- **Live Demo**: https://recolor.pages.dev/
-- **Repository**: https://github.com/SirCesarium/re-color
+## Links
 
-### inventory-api
-- **Description**: Production-grade RESTful inventory management API with granular role-based access control (RBAC), built with Laravel and containerized via Docker.
-- **Tech Stack**: Laravel, PHP, Pest, Docker, PostgreSQL.
-- **Repository**: https://github.com/SirCesarium/inventory-api
+- [GitHub Profile](https://github.com/SirCesarium): Open-source repositories and public code contributions.
+- [LinkedIn Profile](https://www.linkedin.com/in/cesar-marcano): Professional background, experience, and contact.
+- [Portfolio](https://sircesarium.github.io): Official developer portfolio website.
+- [Projects Feed](https://sircesarium.github.io/rss.xml): RSS 2.0 feed of software projects.
 
-### stack-nav
-- **Description**: Zero-dependency state-based navigation library for React applications that provides smooth screen transitions and navigation without relying on URL routing.
-- **Tech Stack**: React, TypeScript, NPM library.
-- **Repository**: https://github.com/SirCesarium/stack-nav
+## Optional
 
-### zipcrawl
-- **Description**: Safe, memory-efficient CLI utility and Rust library for inspecting and exploring ZIP archives without full extraction.
-- **Tech Stack**: Rust, CLI, Rust library.
-- **Repository**: https://github.com/SirCesarium/zipcrawl
-
-### Type-Generator (tyg)
-- **Description**: Ergonomic CLI wrapper around json_typegen to generate strongly-typed Rust, TypeScript, Kotlin, and Go definitions from JSON, YAML, TOML, and XML.
-- **Tech Stack**: Rust, CLI tooling.
-- **Repository**: https://github.com/SirCesarium/tyg
-
-### hellcat-theme
-- **Description**: Dark, charred gruvbox-inspired color theme available in three variants (Hellcat, Hellcat-Oxide, Hellcat-Crimson) for VS Code, GTK, GNOME Shell, and terminal emulators.
-- **Tech Stack**: VS Code theme, JSON, Shell script.
-- **Repository**: https://github.com/SirCesarium/hellcat-theme
+- [crates.io Packages](https://crates.io/crates/modcrawl): Published Rust crates on crates.io.
+- [npm Packages](https://www.npmjs.com/package/modcrawl): Published packages on the npm registry.
