@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+@import '@fontsource/silkscreen/latin-400.css';
+@import '@fontsource-variable/inter';
+
+@theme {
+	--color-crust: #0c0709;
+	--color-line: #241820;
+	--color-selection: #702c40;
+	--color-ink: #eadeda;
+	--color-ink-muted: #8b7d84;
+	--color-ember: #db4d70;
+	--color-ember-bright: #e98296;
+
+	--font-display: 'Silkscreen', ui-monospace, monospace;
+	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer components {
+	.frame {
+		width: 100%;
+		max-width: 80rem;
+		margin-inline: auto;
+		padding-inline: max(1.5rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+	}
+
+	.section-frame {
+		padding-block: clamp(4rem, 9vw, 7rem);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html.reveal-enabled [data-reveal] {
+		opacity: 0;
+		translate: 0 1rem;
+		transition:
+			opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+			translate 700ms cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: calc(var(--i, 0) * 70ms);
+	}
+
+	html.reveal-enabled [data-reveal].is-revealed {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@layer base {
+	html {
+		color-scheme: dark;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+
+	body {
+		@apply bg-crust text-ink font-sans antialiased;
+	}
+
+	::selection {
+		background-color: var(--color-selection);
+		color: var(--color-ink);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-ember);
+		outline-offset: 3px;
+	}
+}
