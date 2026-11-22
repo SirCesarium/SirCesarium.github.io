@@ -1,7 +1,7 @@
 {
 	"name": "Cesar Marcano — Full-stack developer",
 	"short_name": "SirCesarium",
-	"description": "Cesar Marcano (SirCesarium) is a full-stack developer in Venezuela working in TypeScript, Rust, Node and Laravel.",
+	"description": "Cesar Marcano (SirCesarium) — Full-stack developer building performant web apps and developer tooling with TypeScript, Rust, Node.js, and Laravel.",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#0c0709",
