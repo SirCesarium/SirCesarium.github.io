@@ -17,8 +17,6 @@ export const initCursorFlame = (): void => {
 	const puff = document.querySelector<HTMLElement>('.cursor-fog-puff');
 	const heat = document.querySelector<HTMLElement>('.cursor-heat');
 	const dim = document.querySelector<HTMLElement>('.page-dim');
-	const deadPixel = document.querySelector<HTMLElement>('.dead-pixel-line');
-	const deadPixelMsg = document.querySelector<HTMLElement>('.dead-pixel-msg');
 
 	const place = (px: number, py: number) => {
 		if (fog) fog.style.translate = `${px}px ${py}px`;
@@ -167,47 +165,10 @@ export const initCursorFlame = (): void => {
 	let surge: number | undefined;
 	let gloom: number | undefined;
 	let build: number | undefined;
-	let pixelGlitch: number | undefined;
-	let pixelFadeTimer: number | undefined;
-	let msgTimer: number | undefined;
 	let roaring = false;
 	let tense = false;
 
-	const clearPixelGlitch = () => {
-		if (pixelGlitch !== undefined) window.clearTimeout(pixelGlitch);
-		pixelGlitch = undefined;
-	};
-
-	const showDeadPixelMsg = (posX: number, posY: number) => {
-		if (!deadPixelMsg) return;
-		if (msgTimer !== undefined) window.clearTimeout(msgTimer);
-
-		const width = deadPixelMsg.offsetWidth;
-		const height = deadPixelMsg.offsetHeight;
-		const offsetX = Math.max(8, Math.min(posX + 16, window.innerWidth - width - 8));
-		const offsetY = Math.max(8, Math.min(posY + 16, window.innerHeight - height - 8));
-
-		deadPixelMsg.style.translate = `${offsetX}px ${offsetY}px`;
-		deadPixelMsg.classList.add('is-active');
-
-		msgTimer = window.setTimeout(() => {
-			deadPixelMsg.classList.remove('is-active');
-			msgTimer = undefined;
-		}, 6500);
-	};
-
 	const stop = () => {
-		clearPixelGlitch();
-		if (deadPixel?.classList.contains('is-active') && pixelFadeTimer === undefined) {
-			const dropX = x;
-			const dropY = y;
-			pixelFadeTimer = window.setTimeout(() => {
-				deadPixel.classList.remove('is-active');
-				showDeadPixelMsg(dropX, dropY);
-				pixelFadeTimer = undefined;
-			}, 1600);
-		}
-
 		if (emitter !== undefined) window.clearInterval(emitter);
 		if (surge !== undefined) window.clearTimeout(surge);
 		if (gloom !== undefined) window.clearTimeout(gloom);
@@ -238,16 +199,6 @@ export const initCursorFlame = (): void => {
 	const cancelPress = () => {
 		if (activePointer === undefined) return;
 
-		clearPixelGlitch();
-
-		if (pixelFadeTimer !== undefined) {
-			window.clearTimeout(pixelFadeTimer);
-			pixelFadeTimer = undefined;
-		}
-
-		deadPixel?.classList.remove('is-active');
-		deadPixelMsg?.classList.remove('is-active');
-
 		release();
 	};
 
@@ -272,11 +223,6 @@ export const initCursorFlame = (): void => {
 			activePointer = event.pointerId;
 
 			stop();
-			if (pixelFadeTimer !== undefined) {
-				window.clearTimeout(pixelFadeTimer);
-				pixelFadeTimer = undefined;
-				deadPixel?.classList.remove('is-active');
-			}
 			x = event.clientX;
 			y = event.clientY;
 
@@ -300,12 +246,6 @@ export const initCursorFlame = (): void => {
 				blast(x, y);
 				flare();
 			}, 3000);
-
-			pixelGlitch = window.setTimeout(() => {
-				if (!deadPixel) return;
-				deadPixel.style.left = `${x}px`;
-				deadPixel.classList.add('is-active');
-			}, 7000);
 
 			gloom = window.setTimeout(darken, 1900);
 		},

@@ -6,11 +6,6 @@
 
 <div class="page-dim" aria-hidden="true"></div>
 
-<div class="dead-pixel-line" aria-hidden="true"></div>
-<div class="dead-pixel-msg" aria-hidden="true">
-	chill, your screen is fine... i think...
-</div>
-
 <script src="../scripts/cursor-flame.ts"></script>
 
 <style>
@@ -27,49 +22,6 @@
 	.page-dim.is-dim {
 		opacity: 0.82;
 		transition-duration: 1500ms;
-	}
-
-	.dead-pixel-line {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		width: 1px;
-		background: rgb(255 0 0);
-		opacity: 0;
-		pointer-events: none;
-		z-index: 60;
-		transition: opacity 800ms ease-out;
-	}
-
-	.dead-pixel-line.is-active {
-		opacity: 1;
-		transition: opacity 250ms ease-in;
-	}
-
-	.dead-pixel-msg {
-		position: fixed;
-		top: 0;
-		left: 0;
-		font-family: var(--font-display);
-		font-size: 13px;
-		color: var(--color-ink);
-		background: rgb(12 7 9 / 0.92);
-		border: 1px solid var(--color-line);
-		padding: 6px 12px;
-		border-radius: 4px;
-		pointer-events: none;
-		z-index: 60;
-		opacity: 0;
-		translate: 0 0;
-		transition: opacity 600ms ease-out;
-		max-width: calc(100vw - 1rem);
-		text-shadow: 0 0 8px rgb(219 77 112 / 0.35);
-		box-shadow: 0 4px 16px rgb(0 0 0 / 0.6);
-	}
-
-	.dead-pixel-msg.is-active {
-		opacity: 1;
-		transition: opacity 300ms ease-in;
 	}
 
 	.cursor-heat {
