@@ -1,0 +1,178 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<Layout title={`${post.data.title} — Blog`} description={post.data.description}>
+	<SiteNav />
+
+	<article class="frame section-frame min-h-[calc(100vh-14rem)] max-w-4xl">
+		<header class="mb-10 border-b border-line pb-8" data-reveal>
+			<a
+				href="/blog"
+				class="mb-6 inline-flex items-center gap-1.5 text-xs text-ink-muted transition-colors hover:text-ember"
+			>
+				<span aria-hidden="true">←</span> Back to all posts
+			</a>
+
+			<div class="mb-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
+				<time datetime={post.data.pubDate.toISOString()}>
+					Published on {dateFormatter.format(post.data.pubDate)}
+				</time>
+				{post.data.updatedDate && (
+					<span>• Updated on {dateFormatter.format(post.data.updatedDate)}</span>
+				)}
+				{post.data.draft && (
+					<span class="rounded bg-ember/20 px-2 py-0.5 font-display text-[10px] tracking-wider text-ember-bright uppercase">
+						Draft
+					</span>
+				)}
+			</div>
+
+			<h1 class="mb-6 font-display text-2xl tracking-tight text-ink sm:text-4xl lg:text-5xl">
+				{post.data.title}
+			</h1>
+
+			<p class="text-base leading-relaxed text-ink-muted sm:text-lg">{post.data.description}</p>
+
+			{post.data.tags.length > 0 && (
+				<div class="mt-6 flex flex-wrap gap-2">
+					{post.data.tags.map((tag) => (
+						<span class="rounded-md border border-line bg-crust/80 px-2.5 py-1 font-mono text-xs text-ink-muted">
+							#{tag}
+						</span>
+					))}
+				</div>
+			)}
+		</header>
+
+		{post.data.coverImage && (
+			<div class="mb-10 overflow-hidden rounded-xl border border-line">
+				<img
+					src={post.data.coverImage}
+					alt={post.data.title}
+					class="max-h-96 w-full object-cover"
+				/>
+			</div>
+		)}
+
+		<div class="blog-content leading-relaxed text-ink/90" data-reveal>
+			<Content />
+		</div>
+
+		<footer class="mt-14 border-t border-line pt-8">
+			<a
+				href="/blog"
+				class="inline-flex items-center gap-2 rounded-lg border border-line bg-crust/60 px-4 py-2.5 text-xs text-ink transition-colors hover:border-ember hover:text-ember"
+			>
+				<span aria-hidden="true">←</span> Back to blog
+			</a>
+		</footer>
+	</article>
+
+	<SiteFooter />
+</Layout>
+
+<style is:global>
+	.blog-content {
+		font-size: 1.05rem;
+		line-height: 1.8;
+	}
+
+	.blog-content h2 {
+		font-family: var(--font-display);
+		font-size: 1.75rem;
+		margin-top: 2.5rem;
+		margin-bottom: 1rem;
+		color: var(--color-ink);
+		letter-spacing: -0.01em;
+	}
+
+	.blog-content h3 {
+		font-family: var(--font-display);
+		font-size: 1.35rem;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+		color: var(--color-ink);
+	}
+
+	.blog-content p {
+		margin-bottom: 1.5rem;
+		color: var(--color-ink);
+	}
+
+	.blog-content ul,
+	.blog-content ol {
+		margin-bottom: 1.5rem;
+		padding-left: 1.5rem;
+	}
+
+	.blog-content ul {
+		list-style-type: disc;
+	}
+
+	.blog-content ol {
+		list-style-type: decimal;
+	}
+
+	.blog-content li {
+		margin-bottom: 0.5rem;
+	}
+
+	.blog-content a {
+		color: var(--color-ember-bright);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		transition: color 150ms ease;
+	}
+
+	.blog-content a:hover {
+		color: var(--color-ember);
+	}
+
+	.blog-content blockquote {
+		border-left: 3px solid var(--color-ember);
+		padding-left: 1rem;
+		margin-block: 1.5rem;
+		font-style: italic;
+		color: var(--color-ink-muted);
+	}
+
+	.blog-content pre {
+		background-color: var(--color-line) !important;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		margin-block: 1.75rem;
+		overflow-x: auto;
+		font-size: 0.9rem;
+	}
+
+	.blog-content code:not(pre code) {
+		background-color: var(--color-line);
+		color: var(--color-ember-bright);
+		padding: 0.2rem 0.4rem;
+		border-radius: 0.35rem;
+		font-size: 0.875em;
+		font-family: ui-monospace, monospace;
+	}
+</style>
