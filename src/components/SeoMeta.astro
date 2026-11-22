@@ -1,0 +1,53 @@
+---
+import silkscreenUrl from '@fontsource/silkscreen/files/silkscreen-latin-400-normal.woff2?url';
+import { site } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const person = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: site.name,
+	alternateName: site.alias,
+	jobTitle: site.role,
+	email: `mailto:${site.email}`,
+	sameAs: [site.github, site.linkedin],
+	address: {
+		'@type': 'PostalAddress',
+		addressCountry: site.countryCode,
+	},
+	knowsAbout: site.knowsAbout,
+};
+---
+
+<script is:inline>
+	document.documentElement.classList.add('reveal-enabled');
+</script>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content={site.name} />
+<meta name="theme-color" content="#0c0709" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="preload" href={silkscreenUrl} as="font" type="font/woff2" crossorigin />
+<link rel="me" href={site.github} />
+<link rel="me" href={site.linkedin} />
+
+<meta property="og:type" content="profile" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<script type="application/ld+json" set:html={JSON.stringify(person)} />
+<meta name="generator" content={Astro.generator} />

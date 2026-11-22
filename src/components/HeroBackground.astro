@@ -1,0 +1,76 @@
+<div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+	<div class="hero-grid"></div>
+	<div class="hero-fog hero-fog-low"></div>
+	<div class="hero-fog hero-fog-high"></div>
+	<div class="hero-noise"></div>
+</div>
+
+<style>
+	.hero-fog {
+		position: absolute;
+		border-radius: 9999px;
+		filter: blur(20px);
+	}
+
+	.hero-grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(to right, rgb(234 222 218 / 0.04) 1px, transparent 1px),
+			linear-gradient(to bottom, rgb(234 222 218 / 0.04) 1px, transparent 1px);
+		background-size: 72px 72px;
+		mask-image: radial-gradient(ellipse at 55% 45%, black 15%, transparent 75%);
+	}
+
+	.hero-fog-low {
+		right: -10%;
+		bottom: -25%;
+		width: 80vw;
+		height: 70vw;
+		max-width: 1100px;
+		max-height: 700px;
+		background: radial-gradient(
+			ellipse at center,
+			rgb(219 77 112 / 0.13) 0%,
+			rgb(219 77 112 / 0.04) 40%,
+			transparent 70%
+		);
+	}
+
+	.hero-fog-high {
+		top: -20%;
+		left: -15%;
+		width: 70vw;
+		height: 60vw;
+		max-width: 900px;
+		max-height: 620px;
+		background: radial-gradient(
+			ellipse at center,
+			rgb(219 77 112 / 0.07) 0%,
+			rgb(219 77 112 / 0.02) 45%,
+			transparent 70%
+		);
+	}
+
+	.hero-noise {
+		position: absolute;
+		inset: 0;
+		opacity: 0.035;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-fog-low {
+			animation: drift 26s ease-in-out infinite alternate;
+		}
+	}
+
+	@keyframes drift {
+		from {
+			transform: translate3d(0, 0, 0) scale(1);
+		}
+		to {
+			transform: translate3d(-4%, 3%, 0) scale(1.08);
+		}
+	}
+</style>

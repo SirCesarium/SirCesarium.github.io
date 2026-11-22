@@ -1,0 +1,51 @@
+---
+interface Props {
+	class?: string;
+	src?: string;
+	frameWidth?: number;
+	frameHeight?: number;
+}
+
+const {
+	class: className = '',
+	src = '/hellcat.png',
+	frameWidth = 25,
+	frameHeight = 10,
+} = Astro.props;
+---
+
+<div
+	class:list={['hellcat', className]}
+	aria-hidden="true"
+	style={`aspect-ratio:${frameWidth} / ${frameHeight}`}
+>
+	<img src={src} alt="" width={frameWidth * 4} height={frameHeight} />
+</div>
+
+<style>
+	.hellcat {
+		overflow: hidden;
+		pointer-events: none;
+		filter: drop-shadow(0 0 1px rgb(219 77 112 / 0.6)) drop-shadow(0 0 10px rgb(219 77 112 / 0.35))
+			drop-shadow(0 0 26px rgb(219 77 112 / 0.2));
+	}
+
+	.hellcat img {
+		width: 400%;
+		max-width: none;
+		height: 100%;
+		image-rendering: pixelated;
+	}
+
+	@keyframes hellcat-frames {
+		to {
+			translate: -100% 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hellcat img {
+			animation: hellcat-frames calc(4s / 2) steps(4) infinite;
+		}
+	}
+</style>

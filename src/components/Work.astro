@@ -1,0 +1,74 @@
+---
+import Button from './Button.astro';
+import ProjectCard from './ProjectCard.astro';
+import SectionHeading from './SectionHeading.astro';
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+
+// Array order defines the grid: first card is the lead, next three are featured, the rest compact.
+const [lead, ...rest] = projects;
+const featured = rest.slice(0, 3);
+const compact = rest.slice(3);
+---
+
+<section
+	id="work"
+	class="relative isolate flex min-h-svh scroll-mt-16 flex-col justify-center border-t border-line"
+	aria-labelledby="work-title"
+>
+	<div
+		class="work-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-72"
+		aria-hidden="true"
+	></div>
+
+	<div class="frame section-frame">
+		<SectionHeading
+			id="work-title"
+			eyebrow="Work"
+			title="My projects"
+			lead="Projects I use, ship, and maintain."
+			reveal
+		/>
+
+		{lead && (
+			<div class="mt-12 md:mt-16" data-reveal style="--i:0">
+				<ProjectCard project={lead} index={0} />
+			</div>
+		)}
+
+		<div class="mt-6 grid gap-5 md:grid-cols-3">
+			{featured.map((project, index) => (
+				<div data-reveal style={`--i:${index}`}>
+					<ProjectCard project={project} index={index + 1} />
+				</div>
+			))}
+		</div>
+
+		<div class="mt-16 flex items-center gap-4" data-reveal style="--i:0">
+			<span class="font-display text-xs tracking-[0.2em] text-ink-muted uppercase">
+				Also shipped
+			</span>
+			<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+		</div>
+
+		<div class="mt-6 grid gap-4 xl:grid-cols-3">
+			{compact.map((project, index) => (
+				<div data-reveal style={`--i:${index}`}>
+					<ProjectCard project={project} index={index + 4} />
+				</div>
+			))}
+		</div>
+
+		<div class="mt-12 flex justify-center" data-reveal style="--i:0">
+			<Button href={site.github} variant="outline" external class="font-display">
+				More on GitHub
+			</Button>
+		</div>
+	</div>
+</section>
+
+<style>
+	.work-glow {
+		background: radial-gradient(ellipse at 50% 0%, rgb(219 77 112 / 0.08), transparent 65%);
+	}
+</style>

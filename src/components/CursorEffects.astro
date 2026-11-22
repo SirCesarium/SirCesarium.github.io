@@ -1,0 +1,224 @@
+<div class="cursor-heat" aria-hidden="true"></div>
+
+<div class="cursor-fog" aria-hidden="true">
+	<span class="cursor-fog-puff"></span>
+</div>
+
+<div class="page-dim" aria-hidden="true"></div>
+
+<div class="dead-pixel-line" aria-hidden="true"></div>
+<div class="dead-pixel-msg" aria-hidden="true">
+	chill, your screen is fine... i think...
+</div>
+
+<script src="../scripts/cursor-flame.ts"></script>
+
+<style>
+	:global(.page-soot) {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 150px;
+		height: 150px;
+		margin: -75px 0 0 -75px;
+		border-radius: 50%;
+		opacity: 0;
+		scale: 0.6;
+		pointer-events: none;
+		z-index: 31;
+		background: radial-gradient(
+			circle,
+			rgb(3 2 3 / 0.99) 0%,
+			rgb(4 2 3 / 0.99) 44%,
+			rgb(28 8 14 / 0.96) 50%,
+			rgb(175 30 50 / 0.55) 53%,
+			rgb(20 120 240 / 0.5) 57%,
+			rgb(10 22 42 / 0.85) 61%,
+			rgb(4 2 3 / 0.98) 66%,
+			rgb(5 3 4 / 0.95) 82%,
+			rgb(8 5 7 / 0.8) 90%,
+			rgb(12 8 10 / 0.3) 95%,
+			transparent 100%
+		);
+		filter: blur(5px);
+		transition:
+			opacity 2500ms ease-in-out,
+			scale 2200ms ease-out;
+		will-change: opacity, scale, translate;
+	}
+
+	:global(.page-soot.is-hot) {
+		opacity: 0.85;
+		scale: 0.75;
+		transition-duration: 2600ms;
+	}
+
+	:global(.page-soot.is-scorched) {
+		opacity: 1;
+		scale: 1.45;
+		filter: blur(9px);
+		transition-duration: 3000ms;
+	}
+
+	.page-dim {
+		position: fixed;
+		inset: 0;
+		background: var(--color-crust);
+		opacity: 0;
+		pointer-events: none;
+		z-index: 30;
+		transition: opacity 1600ms ease-in-out;
+	}
+
+	.page-dim.is-dim {
+		opacity: 0.82;
+		transition-duration: 1500ms;
+	}
+
+	.dead-pixel-line {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background: rgb(255 0 0);
+		opacity: 0;
+		pointer-events: none;
+		z-index: 60;
+		transition: opacity 800ms ease-out;
+	}
+
+	.dead-pixel-line.is-active {
+		opacity: 1;
+		transition: opacity 250ms ease-in;
+	}
+
+	.dead-pixel-msg {
+		position: fixed;
+		top: 0;
+		left: 0;
+		font-family: var(--font-display);
+		font-size: 13px;
+		color: var(--color-ink);
+		background: rgb(12 7 9 / 0.92);
+		border: 1px solid var(--color-line);
+		padding: 6px 12px;
+		border-radius: 4px;
+		pointer-events: none;
+		z-index: 60;
+		opacity: 0;
+		translate: 0 0;
+		transition: opacity 600ms ease-out;
+		max-width: calc(100vw - 1rem);
+		text-shadow: 0 0 8px rgb(219 77 112 / 0.35);
+		box-shadow: 0 4px 16px rgb(0 0 0 / 0.6);
+	}
+
+	.dead-pixel-msg.is-active {
+		opacity: 1;
+		transition: opacity 300ms ease-in;
+	}
+
+	.cursor-heat {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 200px;
+		height: 200px;
+		margin: -100px 0 0 -100px;
+		border-radius: 9999px;
+		opacity: 0;
+		pointer-events: none;
+		z-index: 35;
+		backdrop-filter: blur(2px) saturate(1.2);
+		-webkit-mask-image: radial-gradient(circle, #000 20%, transparent 68%);
+		mask-image: radial-gradient(circle, #000 20%, transparent 68%);
+		transition: opacity 260ms ease-out;
+		will-change: opacity, translate;
+	}
+
+	.cursor-heat.is-on {
+		opacity: 1;
+	}
+
+	@media (pointer: coarse) {
+		.cursor-heat {
+			display: none;
+		}
+	}
+
+	.cursor-fog {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 200px;
+		height: 200px;
+		margin: -100px 0 0 -100px;
+		opacity: 0;
+		pointer-events: none;
+		z-index: 40;
+		transition: opacity 180ms ease-out;
+		will-change: opacity, translate;
+	}
+
+	.cursor-fog.is-on {
+		opacity: 1;
+	}
+
+	.cursor-fog-puff {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 9999px;
+		background: radial-gradient(
+			circle at 50% 55%,
+			rgb(255 171 61 / 0.3) 0%,
+			rgb(255 122 47 / 0.18) 35%,
+			rgb(219 77 112 / 0.12) 55%,
+			transparent 72%
+		);
+		filter: blur(18px);
+		animation: fog-candle 2.2s ease-in-out infinite;
+	}
+
+	.cursor-fog:not(.is-on) .cursor-fog-puff {
+		animation-play-state: paused;
+	}
+
+	@keyframes fog-candle {
+		0%,
+		100% {
+			opacity: 0.6;
+			scale: 1;
+		}
+		14% {
+			opacity: 0.9;
+			scale: 1.06;
+		}
+		30% {
+			opacity: 0.45;
+			scale: 0.96;
+		}
+		46% {
+			opacity: 0.95;
+			scale: 1.08;
+		}
+		62% {
+			opacity: 0.55;
+			scale: 1.01;
+		}
+		78% {
+			opacity: 0.8;
+			scale: 1.04;
+		}
+		92% {
+			opacity: 0.4;
+			scale: 0.98;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cursor-fog-puff {
+			animation: none;
+		}
+	}
+</style>

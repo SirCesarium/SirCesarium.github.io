@@ -1,0 +1,181 @@
+---
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import Hellcat from './Hellcat.astro';
+import HeroBackground from './HeroBackground.astro';
+import portrait from '../assets/portrait.jpg';
+import { site } from '../data/site';
+
+const name = site.name;
+
+const words = name.split(' ');
+
+const lettersOf = (word: string, offset: number) =>
+	[...word].map((char, index) => ({ char, index: index + offset }));
+---
+
+<section id="top" class="hero relative isolate flex min-h-svh flex-col overflow-hidden">
+	<HeroBackground />
+
+	<Hellcat class="absolute inset-x-0 bottom-0 z-0 mx-auto w-[clamp(150px,13.33vw,220px)]" />
+
+	<div class="hero-frame relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center">
+		<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-16">
+			<div>
+				<h1
+					aria-label={name}
+					class="text-center font-display text-[clamp(2.5rem,10vw,3.5rem)] leading-[0.92] text-ink uppercase md:ml-[-0.12em] md:text-left md:text-[clamp(3.5rem,6.5vw,5.25rem)]"
+				>
+					{words.map((word, wordIndex) => (
+						<>
+							<span class="word" aria-hidden="true">
+								{lettersOf(word, words.slice(0, wordIndex).join('').length).map(
+									({ char, index }) => (
+										<span class="letter" style={`--i:${index}`}>
+											{char}
+										</span>
+									),
+								)}
+							</span>
+							{wordIndex < words.length - 1 ? ' ' : ''}
+						</>
+					))}
+				</h1>
+
+				<p class="role mt-4 text-center font-display text-[clamp(1rem,1.7vw,1.375rem)] text-ink md:mt-5 md:ml-[-0.12em] md:text-left">
+					{site.role}
+				</p>
+
+				<div class="actions mt-6 flex flex-wrap items-center justify-center gap-4 md:mt-8 md:justify-start">
+					<Button href="#work" class="font-display">
+						See work
+					</Button>
+					<Button href={site.github} variant="outline" external class="font-display">
+						GitHub
+					</Button>
+				</div>
+			</div>
+
+			<div class="portrait order-first w-40 self-center md:order-0 md:w-80 md:self-auto">
+				<Image
+					src={portrait}
+					alt="Cesar Marcano"
+					widths={[160, 320, 480]}
+					sizes="(min-width: 768px) 320px, 160px"
+					loading="eager"
+					fetchpriority="high"
+					draggable={false}
+					class="portrait-img"
+				/>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero-frame {
+		padding-inline: max(1.5rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+		padding-top: max(3rem, env(safe-area-inset-top, 0px));
+		padding-bottom: max(6.5rem, calc(env(safe-area-inset-bottom, 0px) + 5.5rem));
+	}
+
+	@media (min-width: 48rem) {
+		.hero-frame {
+			padding-block: 5rem;
+		}
+	}
+
+	.portrait {
+		position: relative;
+		border-radius: 9999px;
+		box-shadow:
+			0 0 0 1px var(--color-line),
+			0 0 60px 0 rgb(219 77 112 / 0.12);
+	}
+
+	.portrait :global(.portrait-img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 9999px;
+		-webkit-user-drag: none;
+		user-select: none;
+	}
+
+	.letter {
+		display: inline-block;
+	}
+
+	.word {
+		display: block;
+		white-space: nowrap;
+	}
+
+	@media (min-width: 48rem) {
+		.word {
+			display: inline;
+		}
+	}
+
+	@keyframes settle {
+		from {
+			opacity: 0;
+			filter: blur(12px);
+		}
+		to {
+			opacity: 1;
+			filter: blur(0);
+		}
+	}
+
+	@keyframes flame {
+		0% {
+			color: var(--color-ink);
+		}
+		8% {
+			color: #e39a5c;
+		}
+		30% {
+			color: #e39a5c;
+		}
+		55% {
+			color: var(--color-ember);
+		}
+		100% {
+			color: var(--color-ink);
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.letter {
+			animation:
+				settle 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
+				flame 1000ms cubic-bezier(0.33, 1, 0.68, 1) backwards;
+			animation-delay: calc(100ms + var(--i) * 32ms);
+		}
+
+		.role {
+			animation: fade-in 600ms ease backwards;
+			animation-delay: 500ms;
+		}
+
+		.actions {
+			animation: fade-in 600ms ease backwards;
+			animation-delay: 650ms;
+		}
+
+		.portrait {
+			animation: fade-in 800ms ease backwards;
+			animation-delay: 750ms;
+		}
+	}
+</style>

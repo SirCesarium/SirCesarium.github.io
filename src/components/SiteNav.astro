@@ -1,0 +1,60 @@
+---
+import { navLinks } from '../data/navigation';
+import { site } from '../data/site';
+---
+
+<nav
+	class="sticky top-0 z-20 border-b border-line bg-crust/90 backdrop-blur-md"
+	aria-label="Sections"
+>
+	<div class="frame flex h-14 items-center justify-center gap-4 sm:justify-between">
+		<a
+			href="#top"
+			class="hidden shrink-0 items-center gap-2 font-display text-xs tracking-[0.18em] text-ink-muted uppercase transition-colors hover:text-ember sm:flex"
+		>
+			{site.alias}
+		</a>
+
+		<ul class="flex items-center gap-1 sm:gap-2">
+			{navLinks.map((link) => (
+				<li>
+					<a
+						href={link.href}
+						data-nav-link
+						class="nav-link inline-flex h-14 items-center px-2 text-xs text-ink-muted transition-colors hover:text-ink sm:px-3 sm:text-sm"
+					>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+	</div>
+</nav>
+
+<script src="../scripts/scroll-spy.ts"></script>
+
+<style>
+	.nav-link {
+		position: relative;
+	}
+
+	.nav-link::after {
+		position: absolute;
+		right: 0.5rem;
+		bottom: 0;
+		left: 0.5rem;
+		height: 2px;
+		background: var(--color-ember);
+		opacity: 0;
+		content: '';
+		transition: opacity 200ms ease;
+	}
+
+	.nav-link.is-active {
+		color: var(--color-ink);
+	}
+
+	.nav-link.is-active::after {
+		opacity: 1;
+	}
+</style>

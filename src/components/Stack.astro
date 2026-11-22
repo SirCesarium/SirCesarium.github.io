@@ -1,0 +1,40 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { stackGroups, workFacts } from '../data/stack';
+
+const sizes = ['text-xl md:text-2xl', 'text-lg md:text-xl', 'text-base md:text-lg'];
+---
+
+<section
+	id="stack"
+	class="flex min-h-svh scroll-mt-16 flex-col justify-center border-t border-line"
+	aria-labelledby="stack-title"
+>
+	<div class="frame section-frame">
+		<SectionHeading id="stack-title" eyebrow="Stack" title="Tools I use." reveal />
+
+		<div class="mt-12 space-y-7">
+			{stackGroups.map((group, index) => (
+				<div data-reveal style={`--i:${index + 1}`}>
+					<p class="font-display text-xs tracking-[0.16em] text-ember uppercase">{group.label}</p>
+					<ul class={`mt-2 flex flex-wrap leading-relaxed text-ink ${sizes[index]}`}>
+						{group.items.map((item) => (
+							<li class="whitespace-nowrap after:mx-3 after:inline-block after:size-1 after:bg-ember/50 after:align-middle after:content-[''] last:after:hidden">
+								<span class="transition-colors duration-200 hover:text-ember">{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</div>
+
+		<dl class="mt-12 grid gap-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+			{workFacts.map((fact, index) => (
+				<div data-reveal style={`--i:${index + 4}`}>
+					<dt class="font-display text-xs tracking-[0.16em] text-ember uppercase">{fact.label}</dt>
+					<dd class="mt-2 text-sm leading-relaxed text-ink-muted">{fact.value}</dd>
+				</div>
+			))}
+		</dl>
+	</div>
+</section>

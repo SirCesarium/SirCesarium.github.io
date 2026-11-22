@@ -1,0 +1,33 @@
+---
+interface Props {
+	id: string;
+	eyebrow: string;
+	title: string;
+	lead?: string;
+	class?: string;
+	reveal?: boolean;
+	delay?: number;
+}
+
+const { id, eyebrow, title, lead, class: className = '', reveal = false, delay = 0 } = Astro.props;
+---
+
+<header
+	class:list={['max-w-2xl', className]}
+	data-reveal={reveal ? '' : undefined}
+	style={reveal ? `--i:${delay}` : undefined}
+>
+	<div class="flex items-center gap-3">
+		<span class="h-px w-8 bg-ember" aria-hidden="true"></span>
+		<p class="font-display text-xs tracking-[0.24em] text-ember uppercase">{eyebrow}</p>
+	</div>
+
+	<h2
+		id={id}
+		class="mt-4 font-display text-[clamp(1.9rem,4.5vw,3rem)] leading-[1.05] text-ink uppercase"
+	>
+		{title}
+	</h2>
+
+	{lead && <p class="mt-4 text-base text-ink-muted">{lead}</p>}
+</header>

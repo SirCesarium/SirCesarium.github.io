@@ -1,0 +1,43 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { aboutBio, aboutFacts } from '../data/about';
+---
+
+<section
+	id="about"
+	class="flex min-h-svh scroll-mt-16 flex-col justify-center border-t border-line"
+	aria-labelledby="about-title"
+>
+	<div class="frame section-frame">
+		<SectionHeading
+			id="about-title"
+			eyebrow="About"
+			title="The short version."
+			lead="Full-stack and tooling developer."
+			reveal
+		/>
+
+		<div class="mt-12 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center md:gap-16">
+			<div
+				class="space-y-5 text-base leading-relaxed text-ink md:text-lg"
+				data-reveal
+				style="--i:1"
+			>
+				{aboutBio.map((paragraph) => (
+					<p>{paragraph}</p>
+				))}
+			</div>
+
+			<dl class="divide-y divide-line border-y border-line" data-reveal style="--i:2">
+				{aboutFacts.map((fact) => (
+					<div class="grid grid-cols-[5rem_1fr] gap-4 py-4 sm:grid-cols-[6.5rem_1fr]">
+						<dt class="font-display text-xs tracking-[0.16em] text-ember uppercase">
+							{fact.label}
+						</dt>
+						<dd class="text-sm text-ink-muted">{fact.value}</dd>
+					</div>
+				))}
+			</dl>
+		</div>
+	</div>
+</section>

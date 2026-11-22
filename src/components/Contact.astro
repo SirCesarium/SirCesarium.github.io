@@ -1,0 +1,97 @@
+---
+import Button from './Button.astro';
+import Hellcat from './Hellcat.astro';
+import { site } from '../data/site';
+---
+
+<section
+	id="contact"
+	class="relative isolate flex min-h-svh scroll-mt-16 flex-col justify-center overflow-hidden border-t border-line"
+	aria-labelledby="contact-title"
+>
+	<div class="contact-glow pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+
+	<Hellcat
+		src="/hellcat-contact.png"
+		frameWidth={16}
+		class="absolute inset-x-0 bottom-0 z-0 mx-auto w-28 sm:w-36"
+	/>
+
+	<div class="frame section-frame relative z-10 flex flex-col items-center text-center">
+		<div class="flex flex-col items-center" data-reveal style="--i:0">
+			<div class="flex items-center gap-3">
+				<span class="h-px w-8 bg-ember" aria-hidden="true"></span>
+				<p class="font-display text-xs tracking-[0.24em] text-ember uppercase">Contact</p>
+			</div>
+
+			<h2
+				id="contact-title"
+				class="mt-5 max-w-3xl font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1.02] text-ink uppercase"
+			>
+				Let's build something.
+			</h2>
+
+			<p class="mt-6 max-w-xl text-base leading-relaxed text-ink-muted">
+				I'm open to remote roles. I care more about the problem than the stack.
+			</p>
+
+			<div class="mt-8 flex flex-wrap justify-center gap-4">
+				<Button href={`mailto:${site.email}`} class="font-display">
+					Email me
+				</Button>
+				<Button href={site.github} variant="outline" external class="font-display">
+					GitHub
+				</Button>
+				<Button href={site.linkedin} variant="outline" external class="font-display">
+					LinkedIn
+				</Button>
+			</div>
+
+			<div class="group relative mt-5 inline-flex max-w-full items-stretch border border-line bg-[#0f090c] transition-colors hover:border-ember/40">
+				<span
+					class="pointer-events-none absolute -top-1 -left-1 size-2 border-t-2 border-l-2 border-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					aria-hidden="true"
+				></span>
+				<span
+					class="pointer-events-none absolute -top-1 -right-1 size-2 border-t-2 border-r-2 border-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					aria-hidden="true"
+				></span>
+				<span
+					class="pointer-events-none absolute -bottom-1 -left-1 size-2 border-b-2 border-l-2 border-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					aria-hidden="true"
+				></span>
+				<span
+					class="pointer-events-none absolute -right-1 -bottom-1 size-2 border-r-2 border-b-2 border-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					aria-hidden="true"
+				></span>
+
+				<a
+					href={`mailto:${site.email}`}
+					class="flex min-w-0 items-center px-4 py-2.5 text-sm text-ink-muted transition-colors hover:text-ink"
+				>
+					<span class="truncate">{site.email}</span>
+				</a>
+
+				<button
+					type="button"
+					data-copy-email
+					data-email={site.email}
+					aria-label="Copy email address"
+					class="flex shrink-0 items-center justify-center border-l border-line px-3 font-display text-xs tracking-[0.12em] text-ember uppercase transition-colors hover:bg-ember hover:text-crust"
+				>
+					<span data-copy-label>Copy</span>
+				</button>
+			</div>
+
+			<p class="sr-only" data-copy-status aria-live="polite"></p>
+		</div>
+	</div>
+</section>
+
+<script src="../scripts/copy-email.ts"></script>
+
+<style>
+	.contact-glow {
+		background: radial-gradient(ellipse at 50% 100%, rgb(219 77 112 / 0.12), transparent 65%);
+	}
+</style>

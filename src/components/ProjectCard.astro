@@ -1,0 +1,165 @@
+---
+import ProjectMedia from './ProjectMedia.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+	project: Project;
+	index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const { slug, name, tagline, facts, stack, links, image, imageFit = 'cover', video } = project;
+
+// Position sets the hierarchy: first card is the lead, cards after the three featured slots are compact.
+const isLead = index === 0;
+const isCompact = index > 3;
+
+// README banners are far wider than a card column. Rendering them full width keeps the whole
+// composition visible instead of boxing a thin strip between two empty bands.
+const isWideBanner = isLead && imageFit === 'contain';
+
+const visibleFacts = isCompact ? facts.slice(0, 1) : facts;
+
+const headingSize = isLead ? 'text-xl md:text-2xl' : isCompact ? 'text-base' : 'text-lg md:text-xl';
+const taglineSize = isLead ? 'text-lg md:text-xl' : isCompact ? 'text-sm' : 'text-base';
+const visualNameSize = isLead
+	? 'text-[clamp(1.5rem,4vw,2.75rem)]'
+	: 'text-[clamp(1.1rem,2.5vw,1.75rem)]';
+
+const body = isWideBanner
+	? 'flex flex-col gap-6 p-6 md:grid md:grid-cols-2 md:items-start md:gap-10 md:p-8'
+	: isLead
+		? 'flex flex-col gap-6 p-6 md:justify-between md:p-8'
+		: isCompact
+			? 'flex flex-col gap-2.5'
+			: 'flex flex-1 flex-col justify-between gap-5 p-5 md:p-6';
+
+const visualShape = isWideBanner
+	? 'aspect-[2560/680] border-b border-line'
+	: isLead
+		? 'aspect-[16/10] border-b border-line md:aspect-auto md:h-full md:border-r md:border-b-0'
+		: isCompact
+			? 'aspect-square border border-line'
+			: 'aspect-[16/10] border-b border-line';
+---
+
+<article
+	class="project-card group relative h-full border border-line bg-[#0f090c]"
+	aria-labelledby={`project-${slug}`}
+>
+	<span class="pointer-events-none absolute -top-1 -left-1 size-2 -translate-1 border-t-2 border-l-2 border-ember opacity-0 transition-[translate,opacity] duration-300 ease-out group-focus-within:translate-0 group-focus-within:opacity-100 group-hover:translate-0 group-hover:opacity-100"></span>
+	<span class="pointer-events-none absolute -top-1 -right-1 size-2 translate-x-1 -translate-y-1 border-t-2 border-r-2 border-ember opacity-0 transition-[translate,opacity] duration-300 ease-out group-focus-within:translate-0 group-focus-within:opacity-100 group-hover:translate-0 group-hover:opacity-100"></span>
+	<span class="pointer-events-none absolute -bottom-1 -left-1 size-2 -translate-x-1 translate-y-1 border-b-2 border-l-2 border-ember opacity-0 transition-[translate,opacity] duration-300 ease-out group-focus-within:translate-0 group-focus-within:opacity-100 group-hover:translate-0 group-hover:opacity-100"></span>
+	<span class="pointer-events-none absolute -right-1 -bottom-1 size-2 translate-1 border-r-2 border-b-2 border-ember opacity-0 transition-[translate,opacity] duration-300 ease-out group-focus-within:translate-0 group-focus-within:opacity-100 group-hover:translate-0 group-hover:opacity-100"></span>
+
+	<div
+		class:list={[
+			isWideBanner
+				? 'flex h-full flex-col'
+				: isLead
+					? 'grid h-full md:grid-cols-[1.15fr_1fr]'
+					: isCompact
+						? 'grid h-full grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 p-4 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-5 sm:p-5'
+						: 'flex h-full flex-col',
+		]}
+	>
+		<ProjectMedia
+			name={name}
+			video={video}
+			image={image}
+			imageFit={imageFit}
+			isWideBanner={isWideBanner}
+			isCompact={isCompact}
+			isLead={isLead}
+			visualShape={visualShape}
+			visualNameSize={visualNameSize}
+		/>
+
+		<div class={body}>
+			<div class="flex flex-col gap-4">
+				<h3
+					id={`project-${slug}`}
+					class:list={['font-display leading-tight text-ink', headingSize]}
+				>
+					{name}
+				</h3>
+
+				<p class:list={['max-w-prose text-ink-muted', taglineSize]}>{tagline}</p>
+
+				<ul class:list={['flex flex-col', isCompact ? 'gap-1.5' : 'gap-2']}>
+					{visibleFacts.map((fact) => (
+						<li class:list={['flex gap-3 text-ink-muted', isCompact ? 'text-xs' : 'text-sm']}>
+							<span
+								class:list={['size-1.5 shrink-0 bg-ember', isCompact ? 'mt-1' : 'mt-1.5']}
+								aria-hidden="true"
+							/>
+							<span>{fact}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div class:list={['flex flex-col gap-4', isCompact && 'gap-3']}>
+				<ul class="flex flex-wrap gap-2">
+					{stack.map((tag) => (
+						<li
+							class:list={[
+								'border border-line text-xs text-ink-muted',
+								isCompact ? 'px-2 py-0.5' : 'px-2.5 py-1',
+							]}
+						>
+							{tag}
+						</li>
+					))}
+				</ul>
+
+				<ul class="flex flex-wrap gap-x-5 gap-y-1">
+					{links.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="inline-flex items-center gap-1 py-1 text-sm font-medium text-ember underline-offset-4 transition-colors hover:text-ember-bright hover:underline"
+							>
+								{link.label}
+								<span class="sr-only"> for {name}</span>
+								<span aria-hidden="true">↗</span>
+								<span class="sr-only">(opens in a new tab)</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	</div>
+</article>
+
+<script src="../scripts/project-videos.ts"></script>
+
+<style>
+	.project-card {
+		transition:
+			border-color 450ms ease,
+			box-shadow 450ms ease,
+			background-color 450ms ease;
+	}
+
+	.project-card:hover,
+	.project-card:focus-within {
+		border-color: rgb(219 77 112 / 0.45);
+		background-color: #130c10;
+		box-shadow:
+			0 0 0 1px rgb(219 77 112 / 0.1),
+			0 24px 70px -38px rgb(219 77 112 / 0.5);
+	}
+
+	.project-card h3 {
+		transition: color 450ms ease;
+	}
+
+	.project-card:hover h3,
+	.project-card:focus-within h3 {
+		color: var(--color-ember-bright);
+	}
+</style>
