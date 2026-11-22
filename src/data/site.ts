@@ -10,5 +10,23 @@ export const site = {
 	title: 'Cesar Marcano — Full-stack developer',
 	description:
 		'Cesar Marcano (SirCesarium) is a full-stack developer in Venezuela working in TypeScript, Rust, Node and Laravel.',
+	url: 'https://sircesarium.github.io',
+	ogImage: '/og.png',
+	twitterHandle: '@SirCesarium',
+	keywords: [
+		'Cesar Marcano',
+		'SirCesarium',
+		'Full-stack developer',
+		'TypeScript',
+		'Rust',
+		'Node.js',
+		'Laravel',
+		'Svelte',
+		'React',
+		'Astro',
+		'Web developer Venezuela',
+		'Software engineer',
+		'Open source',
+	] as const,
 	knowsAbout: ['TypeScript', 'Rust', 'Node.js', 'Laravel', 'Svelte', 'React', 'Astro'] as const,
 } as const;
