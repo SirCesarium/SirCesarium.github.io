@@ -63,7 +63,11 @@ const posterImage =
 			}
 			class:list={[
 				'absolute inset-0 size-full transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100',
-				imageFit === 'contain' ? 'p-3 object-contain sm:p-5' : 'object-cover',
+				isWideBanner
+					? 'object-cover'
+					: imageFit === 'contain'
+						? 'p-3 object-contain sm:p-5'
+						: 'object-cover',
 			]}
 		/>
 	) : (
