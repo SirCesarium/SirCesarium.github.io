@@ -15,7 +15,7 @@ export const initScrollReveal = (): void => {
 				revealObserver.unobserve(entry.target);
 			}
 		},
-		{ rootMargin: '0px 0px -8% 0px', threshold: 0.15 },
+		{ rootMargin: '0px 0px -2% 0px', threshold: 0.05 },
 	);
 
 	for (const node of reveals) {
@@ -23,4 +23,10 @@ export const initScrollReveal = (): void => {
 	}
 };
 
-initScrollReveal();
+if (typeof document !== 'undefined') {
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initScrollReveal);
+	} else {
+		initScrollReveal();
+	}
+}
