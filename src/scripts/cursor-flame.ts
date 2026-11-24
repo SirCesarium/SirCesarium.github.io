@@ -212,7 +212,7 @@ export const initCursorFlame = (): void => {
 	document.addEventListener(
 		'pointerdown',
 		(event) => {
-			if (event.button !== 0 || reducedMotion()) return;
+			if (event.pointerType === 'touch' || event.button !== 0 || reducedMotion()) return;
 
 			// A second finger means a gesture (pinch, two-finger scroll), not a press.
 			if (activePointer !== undefined || !event.isPrimary) {
