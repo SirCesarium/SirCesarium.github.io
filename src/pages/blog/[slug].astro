@@ -172,11 +172,17 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 		margin-block: 2rem;
 	}
 
-	.blog-content img {
+	.blog-content img,
+	.blog-content video {
 		max-width: 100%;
 		height: auto;
 		border-radius: 0.5rem;
 		margin-block: 1.5rem;
+	}
+
+	.blog-content video {
+		border: 1px solid var(--color-line);
+		display: block;
 	}
 
 	.blog-content code:not(pre code) {

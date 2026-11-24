@@ -1,4 +1,5 @@
 import { config, fields, collection } from '@keystatic/core';
+import { block } from '@keystatic/core/content-components';
 
 export default config({
 	storage: {
@@ -33,6 +34,15 @@ export default config({
 				}),
 				content: fields.markdoc({
 					label: 'Content',
+					components: {
+						video: block({
+							label: 'Video',
+							schema: {
+								src: fields.text({ label: 'Video Source URL' }),
+								poster: fields.text({ label: 'Poster Image URL' }),
+							},
+						}),
+					},
 				}),
 			},
 		}),

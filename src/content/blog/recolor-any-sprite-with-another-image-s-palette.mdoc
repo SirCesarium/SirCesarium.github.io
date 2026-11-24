@@ -1,0 +1,142 @@
+---
+title: Recolor any sprite with another image's palette
+description: >-
+  Swap any image's palette onto a pixel art sprite in your browser. Choose a
+  mapping mode, exclude pixels, export PNG. Install it and it works offline.
+pubDate: 2026-11-24
+updatedDate: 2026-11-26
+draft: false
+tags:
+  - pixel-art
+  - sprites
+  - svelte
+  - offline
+  - palette
+coverImage: /blog-cover-images/recolor-release.png
+---
+
+Some time ago I was putting together a private Minecraft modpack for a server with friends. We had new mechanics and progression items coming from a custom core mod, and every tier, weapon, and material needed its own sprite.
+
+Neither of us draws well, and drawing every tier by hand took too much patience.
+
+Doing sprite variants manually in an editor gets old fast. You open Aseprite or Photoshop, pick through each ramp or index, push hue sliders until the colors look muddy or washed out, and hope the contrast holds up.
+
+Since a base sprite already has the shape and shading, swapping colors from another item looked like something a script could automate:
+
+> **Input A:** A base sprite with the shape, highlights, and shading already there, such as an iron plate or tool.
+>
+> **Input B:** A reference sprite with the target palette, such as a darker ingot or gem.
+>
+> **Desired Output:** The base sprite using the new colors while keeping its shading.
+
+---
+
+### The Python prototype and the CLI friction
+
+I wrote a quick script in Python with Pillow to pull dominant colors from the reference image and map them onto the base sprite.
+
+It worked for what I needed, except my friend did not want to touch a terminal. Asking someone to set up Python, virtual environments, and command-line flags just to check a texture got in the way of trying ideas.
+
+So I moved it into the browser, where my friend didn't have to install anything or touch a terminal, and images never leave the machine. That version became [**re::color**](https://recolor.pages.dev/).
+
+---
+
+### Why plain RGB matching breaks pixel sprites
+
+A common way to swap a palette is nearest-neighbor distance in RGB space:
+
+```
+distance = √((R₁ - R₂)² + (G₁ - G₂)² + (B₁ - B₂)²)
+```
+
+That can be fine for photos, but it usually falls apart on pixel art.
+
+Pixel sprites depend on tight contrast ramps (highlights, midtones, shadows, and bounce light) to read as 3D forms at small sizes like 16×16 or 32×32.
+
+If you map a sprite with bright highlights onto a dark palette using plain RGB distance, raw coordinate distance ignores brightness order. A bright highlight can end up closer in RGB space to a dark color than to a light one. Highlights turn into shadows, midtones drop out, and the sprite flattens into a flat silhouette.
+
+---
+
+### Sorting by luminance to keep shading
+
+To keep depth from the original sprite, the new colors need to follow the same brightness order, no matter what hue they have.
+
+Green reads as brighter than red, and red reads as brighter than blue. Perceived luminance (ITU-R BT.709) weights them like this:
+
+```
+LUMINANCE = 0.2126·R + 0.7152·G + 0.0722·B
+```
+
+In **re::color**, luminance mode pairs colors by rank:
+
+1. Read unique colors from the source sprite and compute their perceived luminance.
+1. Read the palette from the reference image and compute its luminance values.
+1. Sort both lists from darkest to lightest.
+1. Match them by rank, from darkest shadow to brightest highlight.
+
+```typescript
+// Sort source colors and target palette by perceived brightness
+const sortedKeys = [...keys].sort(
+  (a, b) => luminance(keyToRgb(a), weights) - luminance(keyToRgb(b), weights)
+);
+
+const sortedPalette = [...palette].sort(
+  (a, b) => luminance(a, weights) - luminance(b, weights)
+);
+
+// Pair by rank: deepest shadow -> deepest shadow, highlight -> highlight
+pairByRank(sortedKeys, sortedPalette, resultMap);
+```
+
+Ranks rarely line up one to one: the pairing spreads them evenly with rounding. When the sprite has more colors than the palette, several source colors land on the same swatch and the ramp compresses; when the palette is larger, some swatches go unused and the sprite keeps its full contrast range.
+
+With the brightness order intact, an orange sprite can turn icy blue or poison green and still keep its shading.
+
+**re::color** has three mapping modes:
+
+- **Luminance order (Recommended for most sprites):** Keeps shading, folds, and lighting depth across very different hues.
+- **Dominant color:** Finds the most common color in the sprite (like a tunic or armor plate), pins it to the main color in the palette, and matches the rest by luminance.
+- **Nearest color:** A weighted RGB distance check, useful when the palette already shares the sprite's tones and only needs a light tint shift.
+
+The mapping pipeline is pluggable: a custom strategy can be async and delegate to a Web Worker or a WASM module. No extra modes ship yet.
+
+---
+
+### Pixel-level controls in the editor
+
+Once it was a web app, I added controls for editing individual pixels:
+
+1. **Pixel exclusion:** You often want to recolor armor or clothes while leaving details untouched. Clicking a pixel on the canvas leaves that pixel as it is; the recolor runs around it.
+
+1. **Palette pruning:** A reference image can return 32 colors when you only want 8. You can uncheck swatches before mapping.
+1. **Session persistence:** Loaded images, the active mode, palette toggles, and excluded pixels stay in IndexedDB; preferences live in localStorage. Reloading or closing the tab keeps your state.
+
+---
+
+### Local-first setup
+
+I kept the processing local and fast:
+
+- **Client-side only:** Game and sprite work often involves unreleased files. **re::color** has no backend, account database, or analytics trackers; color work and PNG export run in browser memory.
+- **Web Workers:** Decoding large PNGs and counting colors can stutter the UI. Running decoding and quantization in Web Workers keeps the main thread around 60 FPS, so zooming, panning, and toggling exclusions stay responsive.
+- **Installable PWA:** Service-worker precaching lets you install it on desktop or mobile and use it offline.
+
+Preferences cover auto-apply, palette color limits, and the default mapping mode; they can also be exported and imported as JSON.
+
+---
+
+### Demo
+
+Short demo:
+
+{% video
+   src="/blog-images/re-color/demo.mp4" /%}
+
+---
+
+### Links
+
+Try it with your own sprites and palettes:
+
+- **Live Web App:** [recolor.pages.dev](https://recolor.pages.dev/)
+- **Source Code:** [github.com/SirCesarium/re-color](https://github.com/SirCesarium/re-color)
