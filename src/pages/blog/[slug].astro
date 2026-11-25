@@ -20,6 +20,10 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 	month: 'long',
 	day: 'numeric',
 });
+
+const hasUpdate =
+	post.data.updatedDate &&
+	post.data.updatedDate.toISOString().slice(0, 10) !== post.data.pubDate.toISOString().slice(0, 10);
 ---
 
 <Layout title={`${post.data.title} — Blog`} description={post.data.description}>
@@ -34,13 +38,20 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 				<span aria-hidden="true">←</span> Back to all posts
 			</a>
 
-			<div class="mb-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
-				<time datetime={post.data.pubDate.toISOString()}>
-					Published on {dateFormatter.format(post.data.pubDate)}
-				</time>
-				{post.data.updatedDate && (
-					<span>• Updated on {dateFormatter.format(post.data.updatedDate)}</span>
-				)}
+			<div class="mb-4 flex flex-wrap items-center justify-between gap-3 text-xs text-ink-muted">
+				<div class="flex flex-col gap-1">
+					<time datetime={post.data.pubDate.toISOString()}>
+						Published {dateFormatter.format(post.data.pubDate)}
+					</time>
+					{hasUpdate && post.data.updatedDate && (
+						<time
+							datetime={post.data.updatedDate.toISOString()}
+							class="text-ink-muted/75"
+						>
+							Updated {dateFormatter.format(post.data.updatedDate)}
+						</time>
+					)}
+				</div>
 				{post.data.draft && (
 					<span class="rounded bg-ember/20 px-2 py-0.5 font-display text-[10px] tracking-wider text-ember-bright uppercase">
 						Draft
