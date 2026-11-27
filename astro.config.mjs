@@ -33,6 +33,7 @@ export default defineConfig({
 		markdoc(),
 		...(isDev ? [keystatic()] : []),
 		sitemap({
+			filter: (page) => !new URL(page).pathname.startsWith('/qr'),
 			serialize(item) {
 				item.lastmod = new Date();
 				item.changefreq = 'monthly';

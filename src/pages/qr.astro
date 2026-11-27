@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import portrait from '../assets/portrait.jpg';
+import { site } from '../data/site';
+
+const links = [
+	{ label: 'Portfolio', href: '/', external: false },
+	{ label: 'GitHub', href: site.github, external: true },
+	{ label: 'Mail', href: `mailto:${site.email}`, external: false },
+	{ label: 'LinkedIn', href: site.linkedin, external: true },
+	{ label: 'Blog', href: '/blog', external: false },
+];
+---
+
+<Layout
+	title={`${site.name} — Links`}
+	description="Links to Cesar Marcano's portfolio, GitHub, email, LinkedIn, and blog."
+	noindex
+>
+	<main class="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+		<div
+			class="qr-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-96"
+			aria-hidden="true"
+		></div>
+
+		<div class="w-full max-w-sm">
+			<header class="flex flex-col items-center text-center">
+				<Image
+					src={portrait}
+					alt={site.name}
+					widths={[96, 192]}
+					sizes="96px"
+					loading="eager"
+					fetchpriority="high"
+					draggable={false}
+					class="size-24 rounded-full border border-line object-cover"
+				/>
+
+				<h1 class="mt-5 font-display text-[clamp(1.5rem,6vw,1.875rem)] leading-none text-ink uppercase">
+					{site.name}
+				</h1>
+
+				<p class="mt-3 text-sm text-ink-muted">{site.role}</p>
+
+				<span class="mt-5 h-px w-10 bg-ember" aria-hidden="true"></span>
+			</header>
+
+			<nav class="mt-8" aria-label="Links">
+				<ul class="flex flex-col gap-3">
+					{links.map((link, index) => (
+						<li>
+							<a
+								href={link.href}
+								target={link.external ? '_blank' : undefined}
+								rel={link.external ? 'noopener noreferrer' : undefined}
+								class="group flex min-h-14 items-center gap-4 border border-line bg-[#0f090c] px-4 transition-colors duration-150 hover:border-ember/50 hover:bg-[#130c10] active:bg-ember/10"
+							>
+								<span class="font-display text-[10px] tracking-[0.16em] text-ember">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+
+								<span class="flex-1 text-[15px] font-medium text-ink">{link.label}</span>
+
+								<span
+									class="text-ink-muted transition-colors group-hover:text-ember"
+									aria-hidden="true"
+								>
+									{link.external ? '↗' : '→'}
+								</span>
+
+								{link.external && <span class="sr-only">(opens in a new tab)</span>}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.qr-glow {
+		background: radial-gradient(ellipse at 50% 0%, rgb(219 77 112 / 0.16), transparent 65%);
+	}
+</style>

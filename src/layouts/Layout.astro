@@ -6,15 +6,16 @@ import SeoMeta from '../components/SeoMeta.astro';
 interface Props {
 	title?: string;
 	description?: string;
+	noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<SeoMeta title={title} description={description} />
+		<SeoMeta title={title} description={description} noindex={noindex} />
 	</head>
 	<body>
 		<slot />
