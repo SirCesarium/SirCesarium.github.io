@@ -2,7 +2,6 @@ import type { ImageMetadata } from 'astro';
 
 import inventoryApiShot from '../assets/projects/inventory-api.png';
 import modcrawlShot from '../assets/projects/modcrawl.png';
-import reColorShot from '../assets/projects/re-color.png';
 import stackNavShot from '../assets/projects/stack-nav.png';
 import zipcrawlShot from '../assets/projects/zipcrawl.png';
 import tygShot from '../assets/projects/tyg.png';
@@ -60,7 +59,6 @@ export const projects: Project[] = [
 			{ label: 'Live demo', href: 'https://recolor.pages.dev/' },
 			{ label: 'GitHub', href: 'https://github.com/SirCesarium/re-color' },
 		],
-		image: reColorShot,
 		video: '/re-color-demo.mp4',
 	},
 	{
